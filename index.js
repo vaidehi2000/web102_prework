@@ -89,6 +89,9 @@ raisedCard.innerHTML = `$${totalRaised.toLocaleString("en-US")}`;
 const gamesCard = document.getElementById("num-games");
 gamesCard.innerHTML = GAMES_JSON.length;
 
+console.log("Total Contributions:", totalContributions);
+console.log("Total Raised:", totalRaised);
+console.log("Number of Games:", GAMES_JSON.length);
 /*************************************************************************************
  * Challenge 5: Add functions to filter the funded and unfunded games
  * total number of contributions, amount donated, and number of games on the site.
@@ -100,10 +103,15 @@ function filterUnfundedOnly() {
     deleteChildElements(gamesContainer);
 
     // use filter() to get a list of games that have not yet met their goal
+    const unfundedGames = GAMES_JSON.filter(game => {
+        return game.pledged < game.goal;
+    });
 
 
     // use the function we previously created to add the unfunded games to the DOM
+    addGamesToPage(unfundedGames);
 
+    console.log("Unfunded:", unfundedGames.length); // for key
 }
 
 // show only games that are fully funded
@@ -111,16 +119,21 @@ function filterFundedOnly() {
     deleteChildElements(gamesContainer);
 
     // use filter() to get a list of games that have met or exceeded their goal
+    const fundedGames = GAMES_JSON.filter(game => {
+        return game.pledged >= game.goal;
+    });
 
+    // use the function we previously created to add funded games to the DOM
+    addGamesToPage(fundedGames);
 
-    // use the function we previously created to add unfunded games to the DOM
-
+    console.log("Funded:", fundedGames.length); // for key
 }
+
 
 // show all games
 function showAllGames() {
     deleteChildElements(gamesContainer);
-
+    addGamesToPage(GAMES_JSON);
     // add all games from the JSON data to the DOM
 
 }
@@ -131,7 +144,9 @@ const fundedBtn = document.getElementById("funded-btn");
 const allBtn = document.getElementById("all-btn");
 
 // add event listeners with the correct functions to each button
-
+unfundedBtn.addEventListener("click", filterUnfundedOnly);
+fundedBtn.addEventListener("click", filterFundedOnly);
+allBtn.addEventListener("click", showAllGames);
 
 /*************************************************************************************
  * Challenge 6: Add more information at the top of the page about the company.
