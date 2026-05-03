@@ -25,6 +25,20 @@ function deleteChildElements(parent) {
 // grab the element with the id games-container
 const gamesContainer = document.getElementById("games-container");
 
+// search logic
+const searchInput = document.getElementById("search");
+
+searchInput.addEventListener("input", () => {
+    const searchText = searchInput.value.toLowerCase();
+
+    const filteredGames = GAMES_JSON.filter(game =>
+        game.name.toLowerCase().includes(searchText)
+    );
+
+    deleteChildElements(gamesContainer);
+    addGamesToPage(filteredGames);
+});
+
 // create a function that adds all data from the games array to the page
 function addGamesToPage(games) {
 
